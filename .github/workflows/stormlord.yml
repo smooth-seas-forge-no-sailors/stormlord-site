@@ -1,0 +1,22 @@
+name: Stormlord
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+  workflow_dispatch:
+    inputs:
+      ref:
+        description: Branch, tag ou versão exata
+        default: main
+        required: true
+        type: string
+
+jobs:
+  ci:
+    uses: smooth-seas-forge-no-sailors/.github/.github/workflows/stormlord.yml@ca356d0b0719ab613059ab2f4e5d3f7ecf7b5456
+    with:
+      sistema: stormlord-site
+      publicar: ${{ github.event_name == 'workflow_dispatch' }}
+      ref: ${{ github.event_name == 'workflow_dispatch' && inputs.ref || github.sha }}
+    secrets: inherit

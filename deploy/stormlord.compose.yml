@@ -1,0 +1,28 @@
+name: stormlord-stormlord-site
+
+services:
+  app:
+    image: stormlord-stormlord-site:${STORMLORD_VERSION:?defina STORMLORD_VERSION}
+    build:
+      context: ..
+    restart: unless-stopped
+    env_file: ${STORMLORD_ENV_FILE:?defina STORMLORD_ENV_FILE}
+    networks:
+      edge:
+        aliases: [stormlord-stormlord-site]
+      internal:
+    labels:
+      dev.stormlord.owner: stormlord
+      dev.stormlord.system: stormlord-site
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "5"
+
+networks:
+  edge:
+    name: ${STORMLORD_EDGE_NETWORK:-stormlord-edge}
+    external: true
+  internal:
+    internal: true

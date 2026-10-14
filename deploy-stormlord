@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+set -euo pipefail
+RAIZ=$(unset CDPATH; cd -- "$(dirname -- "$0")" && pwd)
+exec python3 "$HOME/.config/stormlord/deploy/publicar-stormlord.py" --raiz "$RAIZ" "$@"
