@@ -2,6 +2,7 @@ name: Stormlord
 
 on:
   pull_request:
+    types: [opened, synchronize, reopened, ready_for_review]
   workflow_dispatch:
     inputs:
       ref:
@@ -12,6 +13,7 @@ on:
 
 jobs:
   ci:
+    if: github.event_name != 'pull_request' || github.event.pull_request.draft == false
     uses: smooth-seas-forge-no-sailors/.github/.github/workflows/stormlord.yml@ca356d0b0719ab613059ab2f4e5d3f7ecf7b5456
     with:
       sistema: stormlord-site
