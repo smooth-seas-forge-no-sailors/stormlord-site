@@ -4,19 +4,34 @@ on:
   pull_request:
     types: [opened, synchronize, reopened, ready_for_review]
   workflow_dispatch:
-    inputs:
-      ref:
-        description: Branch, tag ou versão exata
-        default: main
-        required: true
-        type: string
+
+permissions:
+  contents: read
+  packages: write
+
+concurrency:
+  group: stormlord-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name != 'workflow_dispatch' }}
 
 jobs:
   ci:
+    name: ci / validar
     if: github.event_name != 'pull_request' || github.event.pull_request.draft == false
-    uses: smooth-seas-forge-no-sailors/.github/.github/workflows/stormlord.yml@ca356d0b0719ab613059ab2f4e5d3f7ecf7b5456
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Baixar o código
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+
+      - name: Verificar o código
+        run: docker build --target ci --tag stormlord-ci-stormlord-site:${{ github.sha }} .
+
+  publicar:
+    if: github.event_name == 'workflow_dispatch'
+    needs: ci
+    uses: smooth-seas-forge-no-sailors/.github/.github/workflows/stormlord.yml@d7bb36f7d511d72122cc5de1171e66da0a4ff585
     with:
       sistema: stormlord-site
-      publicar: ${{ github.event_name == 'workflow_dispatch' }}
-      ref: ${{ github.event_name == 'workflow_dispatch' && inputs.ref || github.sha }}
+      imagens: >-
+        [{"nome":"app","imagem":"ghcr.io/smooth-seas-forge-no-sailors/stormlord-site","contexto":".","dockerfile":"Dockerfile","variavel_teste":"STORMLORD_IMAGEM_TESTE","variavel_deploy":"STORMLORD_IMAGEM"}]
+      arquivos_configuracao: '["deploy/stormlord.json","deploy/stormlord.compose.yml","deploy/stormlord.caddy"]'
     secrets: inherit

@@ -1,6 +1,6 @@
 # Publicação Stormlord
 
-Este sistema executa o estágio `ci` do `Dockerfile` no GitHub Actions. A publicação é manual, usa a versão exata aprovada e entra na fila única do adaptador no VPS 1.
+O GitHub Actions testa o código, constrói a imagem de produção uma vez, inicia essa imagem e publica seu digest imutável. A publicação é manual e entra na fila do VPS 1, que apenas baixa a imagem aprovada e troca a versão.
 
 ## Configuração
 
@@ -16,9 +16,8 @@ Este sistema executa o estágio `ci` do `Dockerfile` no GitHub Actions. A public
 ```bash
 ./deploy-stormlord validar
 ./deploy-stormlord estado
-./deploy-stormlord testar
 ./deploy-stormlord publicar
 ./deploy-stormlord retornar [versao]
 ```
 
-`publicar` é a alternativa manual. No fluxo normal, escolha a ação **Stormlord** no GitHub, informe a branch ou versão e execute o trabalho. O servidor mantém apenas a versão ativa e uma anterior.
+No GitHub, escolha a branch na ação **Stormlord** e execute o trabalho. O servidor mantém apenas a versão ativa e uma anterior.

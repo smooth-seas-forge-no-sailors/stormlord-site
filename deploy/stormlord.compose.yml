@@ -2,11 +2,11 @@ name: stormlord-stormlord-site
 
 services:
   app:
-    image: stormlord-stormlord-site:${STORMLORD_VERSION:?defina STORMLORD_VERSION}
-    build:
-      context: ..
+    image: ${STORMLORD_IMAGEM:?defina STORMLORD_IMAGEM com o digest aprovado}
     restart: unless-stopped
     env_file: ${STORMLORD_ENV_FILE:?defina STORMLORD_ENV_FILE}
+    cpus: 1
+    mem_limit: 1g
     networks:
       edge:
         aliases: [stormlord-stormlord-site]
