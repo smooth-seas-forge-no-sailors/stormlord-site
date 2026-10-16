@@ -1,6 +1,7 @@
 {
   "schema": 1,
   "sistema": "stormlord-site",
+  "ambiente": "production",
   "dominio": "stormlord.dev.br",
   "porta": 80,
   "saude": "/"
