@@ -9,7 +9,7 @@ O GitHub Actions testa o código, constrói a imagem de produção uma vez, inic
 - porta interna: `80`;
 - verificação: `/`;
 - variáveis de build: nenhuma;
-- ambiente de execução: `/opt/stormlord/apps/stormlord-site/env`.
+- ambiente de execução: `/opt/stormlord/PRODUCTION/stormlord-site/env`.
 
 ## Comandos
 
